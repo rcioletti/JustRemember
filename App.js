@@ -9,14 +9,14 @@
 import React from 'react';
 import type { Node } from 'react';
 import {
-  SafeAreaView,
+  ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
   useColorScheme,
   View,
-  Image,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
@@ -26,8 +26,11 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import { Image, Header, Icon } from 'react-native-elements';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+const markedDates = []
 
 const Section = ({ children, title }): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -65,43 +68,41 @@ const App: () => Node = () => {
   return (
     <SafeAreaProvider style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Image source={require('./img/lol.jpg')} style={{
-          flex: 1, width: '100%', height: '100%',
-        }}>
-        </Image>
-        {/* <Calendar
-              //onDayPress={(day) => { console.log('selected day', day) }}
-          /> */}
-      </ScrollView>
+      <Header
+        leftComponent={{ icon: 'menu', color: '#fff' }}
+        centerComponent={{ text: 'JUST REMEMBER', style: { color: '#fff' } }}
+        rightComponent={{ icon: 'home', color: '#fff' }}
+        containerStyle={{
+          backgroundColor: '#000000',
+          justifyContent: 'space-around',
+        }}
+      />
+      <ImageBackground source={require('./img/lol.png')} resizeMode='cover' style={styles.bgImg}>
+        <ScrollView >
+          <Agenda
+            onDayPress={(day) => {
+               console.log('selected day', day) 
+              }}
+            theme={{
+              arrowColor: 'black',
+              selectedDayTextColor: '#ffffff',
+              selectedDayBackgroundColor: 'black',
+              todayTextColor: 'red',
+            }}
+          />
+        </ScrollView >
+      </ImageBackground>
     </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  backgroundImage: {
+  bgImg: {
     flex: 1,
-    resizeMode: "cover",
-    justifyContent: "center"
-  },
+    width: '100%',
+    height: '100%',
+    //opacity: 0.2,
+  }
 });
 
 export default App;
